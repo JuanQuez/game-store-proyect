@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { Accordion, Button, Card, Col, Form, InputGroup, ListGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,41 +27,62 @@ const Home = () => {
 
     return (
         <div>
-            <h1>Home</h1>
-            <InputGroup className="mb-3">
-                <Form.Control
-                    placeholder="Search game"
-                    aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
-                    value={productsSearch}
-                    onChange={e => setProductsSearch(e.target.value)}
-                />
-                <Button
-                    onClick={() => dispatch(searchProductsThunk(productsSearch))} variant="outline-secondary" id="button-addon2"
-                >
-                    Button
-                </Button>
-            </InputGroup>
+            <Row>
+                <Col md={3}>
+                    <Accordion defaultActiveKey="0" flush>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Category</Accordion.Header>
+                            <Accordion.Body>
+                                <ListGroup>
+                                    {
+                                        categories.map(category => (
+                                            <ListGroup.Item key={category.id}
+                                                onClick={() => dispatch(filterProductsThunk(category.id))}>{category.name}</ListGroup.Item>
+                                        ))
+                                    }
+                                </ListGroup>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+                </Col>
 
-            {
-                categories.map(category => (
-                    <button key={category.id}
-                        onClick={() => dispatch(filterProductsThunk(category.id))}
-                    >{category.name}</button>
-                ))
-            }
+                <Col md={9}>
+                    <InputGroup className="mb-3">
+                        <Form.Control
+                            placeholder="Search game"
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            value={productsSearch}
+                            onChange={e => setProductsSearch(e.target.value)}
+                        />
+                        <Button
+                            onClick={() => dispatch(searchProductsThunk(productsSearch))} variant="outline-secondary" id="button-addon2"
+                        >
+                            Button
+                        </Button>
+                    </InputGroup>
 
-            <ul>
-                {
-                    productsList.map(product => (
-                        <li key={product.id} onClick={() => navigate(`/product/${product.id}`)} >
-                            <h2>{product.title}</h2>
-                            <br />
-                            <img src={product.images[0].url} alt="product-image" style={{ width: 300 }} />
-                        </li>
-                    ))
-                }
-            </ul>
+                    <Row xs={1} md={2} lg={3} className="g-4">
+                        {productsList.map(product => (
+                            <Col key={product.id}>
+                                <Card onClick={() => navigate(`/product/${product.id}`)}>
+                                    <Card.Img
+                                        variant="top"
+                                        style={{ height: 200, objectFit: 'contain' }}
+                                        src={product.images[0].url} />
+                                    <Card.Body>
+                                        <Card.Subtitle className="mb-2 text-muted">{product.brand}</Card.Subtitle>
+                                        <Card.Title>{product.title}</Card.Title>
+                                        <br />
+                                        <Card.Subtitle className="mb-2 text-muted">Price</Card.Subtitle>
+                                        <Card.Title>$ {product.price}</Card.Title>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                </Col>
+            </Row>
         </div>
     );
 };
