@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Accordion, Button, Card, Col, Form, InputGroup, ListGroup, Row } from 'react-bootstrap';
+import { Accordion, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { filterProductsThunk, getProductsThunk, searchProductsThunk } from '../store/slices/products.slice';
+import { filterProductsThunk, getProductsThunk } from '../store/slices/products.slice';
 
 const Home = () => {
 
@@ -16,7 +16,6 @@ const Home = () => {
 
     const productsList = useSelector(state => state.products)
 
-    const [productsSearch, setProductsSearch] = useState("")
 
     useEffect(() => {
         dispatch(getProductsThunk())
@@ -47,20 +46,6 @@ const Home = () => {
                 </Col>
 
                 <Col md={9}>
-                    <InputGroup className="mb-3">
-                        <Form.Control
-                            placeholder="Search game"
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
-                            value={productsSearch}
-                            onChange={e => setProductsSearch(e.target.value)}
-                        />
-                        <Button
-                            onClick={() => dispatch(searchProductsThunk(productsSearch))} variant="outline-secondary" id="button-addon2"
-                        >
-                            Button
-                        </Button>
-                    </InputGroup>
 
                     <Row xs={1} md={2} lg={3} className="g-4">
                         {productsList.map(product => (
@@ -75,7 +60,7 @@ const Home = () => {
                                         <Card.Title>{product.title}</Card.Title>
                                         <br />
                                         <Card.Subtitle className="mb-2 text-muted">Price</Card.Subtitle>
-                                        <Card.Title>$ {product.price}</Card.Title>
+                                        <Card.Title>$ {product.price} USD</Card.Title>
                                     </Card.Body>
                                 </Card>
                             </Col>
