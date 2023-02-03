@@ -40,7 +40,7 @@ const ProductsDetail = () => {
 
     return (
         <div>
-            <input type="text" value={productId} onChange={e => setProductId(e.target.value)} />
+            <input type="number" value={productId} onChange={e => setProductId(e.target.value)} />
             <button onClick={addToCart} >Add to cart</button>
             <Row>
                 <Col md={7}>
